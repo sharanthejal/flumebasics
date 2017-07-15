@@ -1,0 +1,37 @@
+#Starting an Agent
+flume-ng agent --conf-file example.conf --name a1 -Dflume.root.logger=INFO,console
+
+-- Output:
+17/07/15 15:38:55 INFO node.Application: Starting new configuration:{ sourceRunners:{r1=EventDrivenSourceRunner: { source:org.apache.flume.source.NetcatSource{name:r1,state:IDLE} }} sinkRunners:{k1=SinkRunner: { policy:org.apache.flume.sink.DefaultSinkProcessor@4ced8df7 counterGroup:{ name:null counters:{} } }} channels:{c1=org.apache.flume.channel.MemoryChannel{name: c1}} }
+17/07/15 15:38:55 INFO node.Application: Starting Channel c1
+17/07/15 15:38:55 INFO instrumentation.MonitoredCounterGroup: Monitored counter group for type: CHANNEL, name: c1: Successfully registered new MBean.
+17/07/15 15:38:55 INFO instrumentation.MonitoredCounterGroup: Component type: CHANNEL, name: c1 started
+17/07/15 15:38:55 INFO node.Application: Starting Sink k1
+17/07/15 15:38:55 INFO node.Application: Starting Source r1
+17/07/15 15:38:55 INFO source.NetcatSource: Source starting
+17/07/15 15:38:55 INFO source.NetcatSource: Created serverSocket:sun.nio.ch.ServerSocketChannelImpl[/127.0.0.1:44444]
+
+#Check telnet is installed or not.
+-- If not installed install telnet.
+telnet localhost 44444
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+#Now type here what ever you want to send as events to Flume via memory channel. It will be displayed in the logger Sink on the console.
+Hello Flume, this is my first line
+OK
+Thank you
+OK
+1
+OK
+23
+OK
+
+#LoggerSink output:
+17/07/15 15:45:25 INFO sink.LoggerSink: Event: { headers:{} body: 48 65 6C 6C 6F 20 46 6C 75 6D 65 2C 20 74 68 69 Hello Flume, thi }
+17/07/15 15:46:30 INFO sink.LoggerSink: Event: { headers:{} body: 54 68 61 6E 6B 20 79 6F 75 0D                   Thank you. }
+17/07/15 15:46:32 INFO sink.LoggerSink: Event: { headers:{} body: 31 0D                                           1. }
+17/07/15 15:46:33 INFO sink.LoggerSink: Event: { headers:{} body: 32 33 0D                                        23. }
+
+-- If we observe what ever we are typing over there is getting as events in the LoggerSink and displayed in the console.
+-- Generally, netcat source and logger sinks are used for testing purposes only.
