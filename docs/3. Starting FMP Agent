@@ -1,0 +1,37 @@
+#Starting FMP agent
+-- As it has to write to HDFS filessytem
+sudo -u hdfs flume-ng agent --name fmp --conf-file /home/ubuntu/sharan/flume/fmp.conf -Dflume.root.logger=INFO,console
+
+#fmp conf file 
+# fmp.conf: A single-node Flume configuration
+
+# Name the components on this agent
+fmp.sources = logsource
+fmp.sinks = loggersink hdfssink
+fmp.channels = loggerchannel hdfschannel
+
+# Describe/configure the source
+fmp.sources.logsource.type = exec
+fmp.sources.logsource.command = tail -f /home/ubuntu/sharan/flume/gen_logs/logs/access.log
+
+# Describe the logger sink
+fmp.sinks.loggersink.type = logger
+
+# Describe the HDFS sink
+fmp.sinks.hdfssink.type = hdfs
+fmp.sinks.hdfssink.hdfs.path = /user/flumetest
+
+# Use a channel which buffers events in memory loggersink
+fmp.channels.loggerchannel.type = memory
+fmp.channels.loggerchannel.capacity = 1000
+fmp.channels.loggerchannel.transactionCapacity = 100
+
+# Use a channel which buffers events in file for hdfssink
+fmp.channels.hdfschannel.type = file
+fmp.channels.hdfschannel.capacity = 1000
+fmp.channels.hdfschannel.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+fmp.sources.logsource.channels = loggerchannel hdfschannel
+fmp.sinks.loggersink.channel = loggerchannel
+fmp.sinks.hdfssink.channel = hdfschannel
