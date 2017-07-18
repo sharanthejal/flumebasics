@@ -18,9 +18,16 @@ fmpkafka.sinks.kafkasink.type = org.apache.flume.sink.kafka.KafkaSink
 fmpkafka.sinks.kafkasink.kafka.topic = myclustertkafkatopic
 
 # Describe the HDFS sink
+# See different parameters like rollsink, rollcount and roll Interval and fileSuffix
 fmpkafka.sinks.hdfssink.type = hdfs
 fmpkafka.sinks.hdfssink.hdfs.path = /user/flumetest
 fmpkafka.sinks.hdfssink.hdfs.fileType = DataStream
+fmpkafka.sinks.hdfssink.hdfs.filePrefix = retail
+fmpkafka.sinks.hdfssink.hdfs.fileSuffix = .txt
+fmpkafka.sinks.hdfssink.hdfs.rollSize = 1048576
+fmpkafka.sinks.hdfssink.hdfs.rollCount = 30
+fmpkafka.sinks.hdfssink.hdfs.rollInterval = 60
+fmpkafka.sinks.hdfssink.hdfs.inUseSuffix = .tmp
 
 # Use a channel which buffers events in memory kafkasink
 fmpkafka.channels.kafkachannel.type = memory
