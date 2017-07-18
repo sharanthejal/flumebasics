@@ -37,6 +37,11 @@ fmpkafka.sources.logsource.channels = kafkachannel hdfschannel
 fmpkafka.sinks.kafkasink.channel = kafkachannel
 fmpkafka.sinks.hdfssink.channel = hdfschannel
 
+##Create a Kafka Topic
+kafka-topics --zookeeper localhost:2181 --create --topic myclusterkafkatopic --partitions 2  --replication-factor 3
+-- If we don't create a topic, topic will be created but it will take the default replication factor and partitions.
+-- It's a good practice to create a topic and then push the data into that topic. 
+
 ## Start Flume Agent
 --Start a Flume Agent with the above configuration file which will publish data to kafka topic and also push data to HDFS that's why
 its a Multiplexing data flow model, that's why the naming also fmp(flume multiplexing, just for our understanding).
