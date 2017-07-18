@@ -1,3 +1,4 @@
+--Below is the configuration file
 # fmpkafka.conf: A single-node Flume configuration
 # use the below configuration where the source is log and channels are file and memory for hdfs and kafka respectively
 
@@ -36,3 +37,13 @@ fmpkafka.sources.logsource.channels = kafkachannel hdfschannel
 fmpkafka.sinks.kafkasink.channel = kafkachannel
 fmpkafka.sinks.hdfssink.channel = hdfschannel
 
+## Start Flume Agent
+--Start a Flume Agent with the above configuration file which will publish data to kafka topic and also push data to HDFS that's why
+its a Multiplexing data flow model, that's why the naming also fmp(flume multiplexing, just for our understanding).
+
+sudo -u hdfs flume-ng agent --name fmpkafka --conf-file /home/ubuntu/sharan/flume/fmpkafka.conf
+
+## Now start the kafka consumer, which will consume the messages which are published to the topic from the beginnning
+kafka-console-consumer \
+--bootstrap-server ipaddress1:9092,ipaddress2:9092 \
+--topic myclustertkafkatopic --from-beginning
